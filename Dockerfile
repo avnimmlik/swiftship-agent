@@ -25,4 +25,4 @@ COPY . .
 EXPOSE 8080
 
 # Run the agent web UI. The host must be 0.0.0.0 for cloud services.
-CMD ["uv", "run", "adk", "web", ".", "--host", "0.0.0.0", "--port", "8080", "--allow_origins", "*", "--reload_agents"]
+CMD ["uv", "run", "adk", "web", "app", "--host", "0.0.0.0", "--port", "8080", "--allow_origins", "*"]
