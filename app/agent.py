@@ -26,7 +26,7 @@ os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "False"
 # Define the models
 # Note: we use "gemini-2.5-flash" as it is the standard model and supported
 model = Gemini(
-    model="gemini-2.0-flash",
+    model="gemini-3.8-flash",
     retry_options=types.HttpRetryOptions(attempts=3),
 )
 
@@ -47,7 +47,7 @@ async def classify_query(ctx: Context, node_input: str) -> str:
     )
     
     response = await client.aio.models.generate_content(
-        model='gemini-2.0-flash',
+        model='gemini-3.8-flash',
         contents=prompt,
     )
     
