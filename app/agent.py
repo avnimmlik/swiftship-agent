@@ -26,7 +26,7 @@ os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "False"
 # Define the models
 # Note: we use "gemini-2.5-flash" as it is the standard model and supported
 model = Gemini(
-    model="gemini-3.8-flash",
+    model="gemini-3.6-flash",
     retry_options=types.HttpRetryOptions(attempts=3),
 )
 
@@ -46,12 +46,19 @@ async def classify_query(ctx: Context, node_input: str) -> str:
         "Do not include any other text."
     )
     
-    response = await client.aio.models.generate_content(
-        model='gemini-3.8-flash',
-        contents=prompt,
-    )
+    response = None
+    for candidate_model in ['gemini-3.6-flash', 'gemini-3.5-flash', 'gemini-3.8-flash']:
+        try:
+            response = await client.aio.models.generate_content(
+                model=candidate_model,
+                contents=prompt,
+            )
+            if response and response.text:
+                break
+        except Exception:
+            continue
     
-    classification = response.text.strip().lower()
+    classification = response.text.strip().lower() if response and response.text else "shipping"
     
     if "shipping" in classification:
         ctx.route = "shipping"
